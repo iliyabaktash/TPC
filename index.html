@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tabriz Petrochemical Company — Wastewater Treatment | Iliya Baktash</title>
+<meta name="description" content="Piping design, line/valve lists, dosing pump skid design and pipe support FEA for the Tabriz Petrochemical Company wastewater treatment project — Iliya Baktash.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EEF2F5;
+    --paper-card:#FFFFFF;
+    --ink:#16232F;
+    --ink-mid:#4A5C6E;
+    --ink-soft:#7A8A99;
+    --line:#C3CFD8;
+    --line-soft:#DAE2E8;
+    --navy-2:#1E4160;
+    --red:#C1400E;
+    --maxw:960px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Mono', ui-monospace, monospace;
+    font-size:16px; line-height:1.65; -webkit-font-smoothing:antialiased;
+    background-image:linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+    background-size:28px 28px; background-position:-1px -1px;
+  }
+  h1,h2{ font-family:'Space Grotesk', sans-serif; margin:0; color:var(--ink); }
+  a{ color:var(--red); text-decoration:none; }
+  a:hover{ text-decoration:underline; }
+  p{ color:var(--ink-mid); max-width:70ch; }
+
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px; border-bottom:1px solid var(--line);
+    position:sticky; top:0; background:rgba(238,242,245,.92); backdrop-filter:blur(6px);
+  }
+  .mark{ font-family:'Space Grotesk', sans-serif; font-weight:600; color:var(--ink); font-size:1rem; }
+  .back-link{ font-size:.8rem; color:var(--ink-mid); border:1px solid var(--ink); padding:6px 12px; }
+  .back-link:hover{ color:var(--red); border-color:var(--red); text-decoration:none; }
+
+  main{ max-width:var(--maxw); margin:0 auto; padding:48px 24px 60px; }
+  .eyebrow{ color:var(--red); font-size:.8rem; letter-spacing:.05em; margin:0 0 10px; }
+  h1{ font-size:clamp(1.6rem,4.2vw,2.3rem); line-height:1.15; margin-bottom:10px; }
+  .meta{ font-size:.85rem; color:var(--ink-soft); margin:0 0 16px; }
+  .tags{ display:flex; gap:6px; flex-wrap:wrap; margin-bottom:26px; }
+  .tag{ font-size:.66rem; letter-spacing:.04em; border:1px solid var(--navy-2); color:var(--navy-2); padding:2px 6px; }
+  .underline{ width:80px; height:2px; background:var(--red); margin-bottom:22px; }
+  .summary{ font-size:.95rem; }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin:26px 0; }
+  .stat{ background:var(--paper-card); padding:14px 16px; }
+  .stat .num{ font-family:'Space Grotesk', sans-serif; font-size:1.3rem; color:var(--ink); }
+  .stat .lbl{ font-size:.68rem; color:var(--ink-soft); text-transform:uppercase; letter-spacing:.04em; margin-top:2px; }
+
+  .part{ border-top:1px solid var(--line); padding-top:28px; margin-top:32px; }
+  .part-eyebrow{ font-size:.72rem; letter-spacing:.06em; color:var(--ink-soft); text-transform:uppercase; margin-bottom:8px; display:block; }
+  .part h2{ font-size:1.2rem; margin-bottom:14px; }
+  .part ul{ padding-left:18px; color:var(--ink-mid); font-size:.9rem; margin-bottom:18px; }
+  .part li{ margin-bottom:7px; }
+
+  .standards-label{ font-size:.72rem; letter-spacing:.06em; color:var(--ink-soft); text-transform:uppercase; margin:18px 0 10px; display:block; }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{ border:1px solid var(--line); padding:5px 10px; font-size:.76rem; color:var(--ink-mid); background:var(--paper-card); }
+
+  .gallery-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+    gap:10px;
+  }
+  .gallery-thumb{
+    padding:0; margin:0; border:1px solid var(--line); background:var(--paper-card);
+    cursor:zoom-in; overflow:hidden; display:flex; flex-direction:column;
+  }
+  .gallery-thumb img{ width:100%; aspect-ratio:4/3; object-fit:cover; background:#fff; display:block; transition:transform .2s ease; }
+  .gallery-thumb:hover img{ transform:scale(1.04); }
+  .gallery-thumb .cap{ font-size:.72rem; color:var(--ink-soft); padding:7px 9px; border-top:1px solid var(--line-soft); text-align:left; }
+  .gallery-thumb:focus-visible{ outline:2px solid var(--red); outline-offset:2px; }
+
+  .lightbox{ position:fixed; inset:0; z-index:100; background:rgba(22,35,47,.94); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; }
+  .lightbox[hidden]{ display:none; }
+  .lightbox-img{ max-width:min(92vw,950px); max-height:74vh; object-fit:contain; border:1px solid rgba(234,241,244,.3); background:#fff; }
+  .lightbox-caption{ color:#EAF1F4; font-size:.82rem; margin-top:14px; text-align:center; max-width:70ch; }
+  .lightbox-close, .lightbox-nav{
+    position:fixed; background:none; border:1px solid rgba(234,241,244,.4); color:#EAF1F4;
+    font-family:'IBM Plex Mono', monospace; cursor:pointer; width:40px; height:40px;
+    display:flex; align-items:center; justify-content:center; font-size:1.2rem;
+  }
+  .lightbox-close:hover, .lightbox-nav:hover{ border-color:var(--red); color:var(--red); }
+  .lightbox-close{ top:18px; right:18px; }
+  .lightbox-prev{ left:18px; top:50%; transform:translateY(-50%); }
+  .lightbox-next{ right:18px; top:50%; transform:translateY(-50%); }
+  @media (max-width:560px){ .lightbox-prev{ left:6px; } .lightbox-next{ right:6px; } }
+
+  footer{
+    max-width:var(--maxw); margin:0 auto; padding:0 24px 50px;
+    font-size:.78rem; color:var(--ink-soft);
+    border-top:1px solid var(--line); padding-top:20px; margin-top:34px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <span class="mark">Iliya Baktash</span>
+  <a class="back-link" href="https://iliyabaktash.ir/#drawings">&#8592; Back to résumé</a>
+</header>
+
+<main>
+  <p class="eyebrow">Project Record — DWG&#8209;001</p>
+  <h1>Tabriz Petrochemical Company — Wastewater Treatment</h1>
+  <p class="meta">Kerend Control Aban (KCA) · Tabriz, Iran · 2025–2026</p>
+  <div class="tags"><span class="tag">PI</span><span class="tag">QC</span><span class="tag">ME</span></div>
+  <div class="underline"></div>
+
+  <p class="summary">Full piping-integrity, QC and mechanical scope for the plant's wastewater treatment package — from line and valve lists through PDMS modeling, CAESAR&nbsp;II stress analysis, dosing pump skid design, and pipe support design/FEA across the whole site.</p>
+
+  <div class="stat-row">
+    <div class="stat"><div class="num">1,400+</div><div class="lbl">Lines listed</div></div>
+    <div class="stat"><div class="num">1,500+</div><div class="lbl">Valves listed</div></div>
+    <div class="stat"><div class="num">1/2"–28"</div><div class="lbl">Pipe size range</div></div>
+    <div class="stat"><div class="num">4</div><div class="lbl">Pipe materials</div></div>
+  </div>
+
+  <div class="part">
+    <span class="part-eyebrow">Part 1</span>
+    <h2>Line List, Valve List &amp; Piping Material Specification</h2>
+    <ul>
+      <li>Prepared and revised the project's line list and manual valve list — over 1,400 lines and 1,500 valves, tracked against successive P&amp;ID revisions</li>
+      <li>Wrote the Piping Material Specification (PMS) covering pipe classes, ratings and end connections for each service</li>
+      <li>Sized lines from 1/2" up to 28", across PVC, PE (polyethylene), SS (stainless steel) and CS (carbon steel) piping</li>
+      <li>Identified critical lines downstream of pumps and heat exchangers and transmitted them for stress analysis</li>
+    </ul>
+    <span class="standards-label">Valve types covered</span>
+    <div class="chips">
+      <span class="chip">Gate Valve (GV)</span>
+      <span class="chip">Globe Valve (GLV)</span>
+      <span class="chip">Ball Valve (BV)</span>
+      <span class="chip">Butterfly Valve (BFV)</span>
+      <span class="chip">Bleed/Blowdown Ball Valve (BBV)</span>
+      <span class="chip">Pressure Relief Valve (PRV)</span>
+      <span class="chip">Pressure Safety Valve (PSV)</span>
+      <span class="chip">Check Valve</span>
+    </div>
+    <span class="standards-label">Pipe materials</span>
+    <div class="chips">
+      <span class="chip">PVC</span>
+      <span class="chip">PE — Polyethylene</span>
+      <span class="chip">SS — Stainless Steel</span>
+      <span class="chip">CS — Carbon Steel</span>
+    </div>
+  </div>
+
+  <div class="part">
+    <span class="part-eyebrow">Part 2</span>
+    <h2>Modeling, Stress Analysis &amp; QC Documentation</h2>
+    <ul>
+      <li>3D piping design in AVEVA PDMS, generating isometrics for the whole site</li>
+      <li>Stress analysis of critical lines in CAESAR&nbsp;II against ASME B31.3</li>
+      <li>Wrote the hydrotest specification for all PVC, PE, SS and CS lines</li>
+      <li>Prepared the Welding Procedure Specification (WPS) and the painting procedure, and controlled the 3‑layer painting thickness on site against spec</li>
+    </ul>
+  </div>
+
+  <div class="part">
+    <span class="part-eyebrow">Part 3</span>
+    <h2>Dosing Pump Skid — Design &amp; QC</h2>
+    <ul>
+      <li>Designed the RO/UF backwash dosing pump skid — piping, structural frame and equipment layout — in SolidWorks</li>
+      <li>QC'd the skid's fabrication against the 3D model and piping isometrics before shipment</li>
+    </ul>
+    <div class="gallery-grid">
+      <button type="button" class="gallery-thumb" data-full="media/01-dosing-skid-isometric.jpg" data-caption="Dosing pump skid piping isometric">
+        <img src="media/01-dosing-skid-isometric.jpg" alt="Dosing pump skid piping isometric model" loading="lazy">
+        <span class="cap">Dosing skid — piping isometric</span>
+      </button>
+      <button type="button" class="gallery-thumb" data-full="media/02-dosing-skid-full-model.jpg" data-caption="Full dosing pump skid model with tanks, pumps and piping">
+        <img src="media/02-dosing-skid-full-model.jpg" alt="Full dosing pump skid 3D model" loading="lazy">
+        <span class="cap">Dosing skid — full model (tanks &amp; pumps)</span>
+      </button>
+      <button type="button" class="gallery-thumb" data-full="media/03-dosing-skid-frame-solidworks.jpg" data-caption="Dosing pump skid structural frame, modeled in SolidWorks">
+        <img src="media/03-dosing-skid-frame-solidworks.jpg" alt="Dosing pump skid structural frame in SolidWorks" loading="lazy">
+        <span class="cap">Dosing skid — structural frame (SolidWorks)</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="part">
+    <span class="part-eyebrow">Part 4</span>
+    <h2>Pipe Supports — Design, FEA &amp; Fabrication</h2>
+    <ul>
+      <li>Generated piping support drawings for the whole site and tagged every support against the isometrics and equipment/skid layout</li>
+      <li>Ran finite element analysis on the pipe support structures — meshing and resultant displacement (URES) under piping and thermal loads</li>
+      <li>Followed supports through fabrication and painting, from raw welded frames to finished, coated units ready for install</li>
+    </ul>
+    <div class="gallery-grid">
+      <button type="button" class="gallery-thumb" data-full="media/05-pipe-support-fea-mesh.jpg" data-caption="FEA mesh of a pipe support structure">
+        <img src="media/05-pipe-support-fea-mesh.jpg" alt="FEA mesh of a pipe support" loading="lazy">
+        <span class="cap">Pipe support — FEA mesh</span>
+      </button>
+      <button type="button" class="gallery-thumb" data-full="media/04-pipe-support-fea-displacement.jpg" data-caption="FEA resultant displacement (URES) contour of a pipe support under load">
+        <img src="media/04-pipe-support-fea-displacement.jpg" alt="FEA displacement contour of a pipe support" loading="lazy">
+        <span class="cap">Pipe support — FEA displacement (URES)</span>
+      </button>
+      <button type="button" class="gallery-thumb" data-full="media/07-pipe-support-frame-welded.jpg" data-caption="Pipe support frame, welded and ready for surface prep">
+        <img src="media/07-pipe-support-frame-welded.jpg" alt="Welded pipe support frame" loading="lazy">
+        <span class="cap">Pipe support — welded frame</span>
+      </button>
+      <button type="button" class="gallery-thumb" data-full="media/06-pipe-support-fabrication.jpg" data-caption="Pipe support frame during fabrication on site">
+        <img src="media/06-pipe-support-fabrication.jpg" alt="Pipe support frame under fabrication" loading="lazy">
+        <span class="cap">Pipe support — fabrication</span>
+      </button>
+      <button type="button" class="gallery-thumb" data-full="media/08-pipe-support-painted.jpg" data-caption="Finished, painted pipe support ready for installation">
+        <img src="media/08-pipe-support-painted.jpg" alt="Painted, finished pipe support" loading="lazy">
+        <span class="cap">Pipe support — painted &amp; finished</span>
+      </button>
+    </div>
+  </div>
+</main>
+
+<footer>
+  © <span id="year"></span> Iliya Baktash · <a href="mailto:Baktashiliya@gmail.com">Baktashiliya@gmail.com</a> · <a href="https://iliyabaktash.ir/">Full résumé →</a>
+</footer>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightboxClose" type="button" aria-label="Close photo">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev" type="button" aria-label="Previous photo">&#8249;</button>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lightboxNext" type="button" aria-label="Next photo">&#8250;</button>
+  <p class="lightbox-caption" id="lightboxCaption"></p>
+</div>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  (function(){
+    var lightbox = document.getElementById('lightbox');
+    var lbImg = document.getElementById('lightboxImg');
+    var lbCap = document.getElementById('lightboxCaption');
+    var closeBtn = document.getElementById('lightboxClose');
+    var prevBtn = document.getElementById('lightboxPrev');
+    var nextBtn = document.getElementById('lightboxNext');
+    var group = [];
+    var index = 0;
+
+    function show(){
+      var btn = group[index];
+      var img = btn.querySelector('img');
+      lbImg.src = btn.getAttribute('data-full') || img.src;
+      lbImg.alt = img.alt || '';
+      lbCap.textContent = btn.getAttribute('data-caption') || '';
+    }
+    function openAt(g, i){
+      group = g; index = i;
+      show();
+      lightbox.hidden = false;
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function closeLB(){
+      lightbox.hidden = true;
+      document.body.style.overflow = '';
+    }
+    function next(){ index = (index + 1) % group.length; show(); }
+    function prev(){ index = (index - 1 + group.length) % group.length; show(); }
+
+    document.querySelectorAll('.gallery-grid').forEach(function(grid){
+      var thumbs = Array.prototype.slice.call(grid.querySelectorAll('.gallery-thumb'));
+      thumbs.forEach(function(btn, i){
+        btn.addEventListener('click', function(){ openAt(thumbs, i); });
+      });
+    });
+
+    closeBtn.addEventListener('click', closeLB);
+    nextBtn.addEventListener('click', next);
+    prevBtn.addEventListener('click', prev);
+    lightbox.addEventListener('click', function(e){ if(e.target === lightbox) closeLB(); });
+    document.addEventListener('keydown', function(e){
+      if(lightbox.hidden) return;
+      if(e.key === 'Escape') closeLB();
+      if(e.key === 'ArrowRight') next();
+      if(e.key === 'ArrowLeft') prev();
+    });
+  })();
+</script>
+
+</body>
+</html>
